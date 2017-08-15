@@ -1,4 +1,3 @@
-/*
 var mongoose = require('mongoose');
 var gracefulShutdown;
 var dbURI = 'mongodb://localhost/Loc8r';
@@ -8,13 +7,14 @@ if (process.env.NODE_ENV === 'production') {
 
 mongoose.connect(dbURI);
 
-var db = mongoose.connection;
 // CONNECTION EVENTS
-db.on('connected', function() {
+mongoose.connection.on('connected', function() {
     console.log('Mongoose connected to ' + dbURI);
 });
-db.on('error', console.error.bind(console, 'connection error:'));
-db.on('disconnected', function() {
+mongoose.connection.on('error', function(err) {
+    console.log('Mongoose connection error: ' + err);
+});
+mongoose.connection.on('disconnected', function() {
     console.log('Mongoose disconnected');
 });
 
@@ -44,4 +44,6 @@ process.on('SIGTERM', function() {
         process.exit(0);
     });
 });
-*/
+
+// BRING IN YOUR SCHEMAS & MODELS
+require('./locations');
